@@ -4,11 +4,29 @@ const app = express();
 const server = require('http').Server(app); // eslint-disable-line
 const port = process.env.PORT || 3000;
 const path = require('path');
-const imperio = require('imperio')(server);
-// const imperio = require('./../../imperioDev/index.js')(server);
+
+// ****************** READ THIS, TEAM IMPERIO!! *************************
+// Uncomment or edit these lines to refer to the desired library version:
+// **********************************************************************
+// Path to npm module:
+// const imperio = require('imperio')(server);
+// Path to local (in-development) version of the repository
+const imperio = require('./../../imperioDev/index.js')(server);
+
+// ****************** READ THIS, TEAM IMPERIO!! *************************
+// You need to adjust the path to the desired front-end build, like above
+//  Should lead to the ROOT directory of the imperio library (not /dist)
+// **********************************************************************
+// Path to npm module:
+// app.use(express.static(path.join(`${__dirname}/../node_modules/imperio`)));
+// Path to local (in-development) version of the repository
+app.use(express.static(path.join(`${__dirname}/../../imperioDev`)));
+
+/* ----------------------------------
+ * -----   Global Middleware   ------
+ * ---------------------------------- */
 
 app.use(express.static(path.join(`${__dirname}/../client`)));
-app.use(express.static(path.join(`${__dirname}/../node_modules/imperio`)));
 app.set('view engine', 'ejs');
 app.use(imperio.init());
 
@@ -19,21 +37,13 @@ app.use(imperio.init());
  // App will serve up different pages for client & desktop
 app.get('/',
   (req, res) => {
-    if (req.imperio.userAgent && req.imperio.userAgent.isDesktop) {
-      res.render('./../client/index.ejs');
-    } else if (req.imperio.userAgent && req.imperio.userAgent.isMobile) {
-      // res.render(`${__dirname}/../client/rootmobile`, { error: null });
-      res.render('./../client/index.ejs');
-    } else {
-      res.render('./../client/index.ejs');
-    }
+    res.render('./../client/index.ejs');
   }
 );
 // 404 error on invalid endpoint
 app.get('*', (req, res) => {
   res.status(404)
-     .render(`${__dirname}/../client/rootmobile`,
-            { error: 'Please enter code to connect to browser' });
+     .render('./../client/404.html');
 });
 
 /* ----------------------------------
@@ -41,5 +51,5 @@ app.get('*', (req, res) => {
  * ---------------------------------- */
 
 server.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  console.log(`Listening on port ${port}`); // eslint-disable-line
 });
