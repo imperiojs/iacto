@@ -29,4 +29,6 @@ Don't forget to edit these files:
 ```
 server/server.js: Define the routes to the appropriate version of Imperio
 client/templates/footer.ejs: Define the src of the appropriate Imperio client
+^ This one may not be necessary, as long as your static routes in express
+  include the root directory of our library, regardless of where it is
 ```
