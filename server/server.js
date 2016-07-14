@@ -11,7 +11,7 @@ const path = require('path');
 // Path to npm module:
 // const imperio = require('imperio')(server);
 // Path to local (in-development) version of the repository
-const imperio = require('./../../imperioDev/index.js')(server);
+const imperio = require('./../../imperio/index.js')(server);
 
 // ****************** READ THIS, TEAM IMPERIO!! *************************
 // You need to adjust the path to the desired front-end build, like above
@@ -20,7 +20,7 @@ const imperio = require('./../../imperioDev/index.js')(server);
 // Path to npm module:
 // app.use(express.static(path.join(`${__dirname}/../node_modules/imperio`)));
 // Path to local (in-development) version of the repository
-app.use(express.static(path.join(`${__dirname}/../../imperioDev`)));
+app.use(express.static(path.join(`${__dirname}/../../imperio`)));
 
 /* ----------------------------------
  * -----   Global Middleware   ------
@@ -35,9 +35,34 @@ app.use(imperio.init());
  * ---------------------------------- */
 
  // App will serve up different pages for client & desktop
+
+app.get('/favicon.ico', (req, res) => {
+  console.log('favicon workaround handled!');
+  res.send();
+});
 app.get('/',
   (req, res) => {
-    res.render('./../client/index.ejs');
+    if (req.useragent && req.useragent.isDesktop) {
+      res.render(path.join(`${__dirname}/../client/index.ejs`));
+    } else if (req.useragent && req.useragent.isMobile) {
+      res.render(`${__dirname}/../client/mobileLogin.ejs`, { error: null });
+    }
+  }
+);
+app.post('/',
+  (req, res) => {
+    if (req.useragent && req.useragent.isMobile) {
+      // TODO Validate nonce match, if it doesn't, serve rootmobile
+      console.log(req.imperio);
+      if (req.imperio.connected) {
+        res.render(`${__dirname}/../client/mobile`, { error: null });
+      } else {
+        res.render(`${__dirname}/../client/mobileLogin`, { error: null });
+      }
+    } else {
+      res.status(404)
+         .render(`${__dirname}/../client/index.ejs`, { error: 'NO POST' });
+    }
   }
 );
 // 404 error on invalid endpoint

@@ -1,1 +1,13 @@
 
+#pinch-box {
+  background-color:blue;
+  width:100%;
+  height:20em;
+}
+
+
+#pinch-receiver {
+  background-color:yellow;
+  width:100%;
+  height:20em;
+}
