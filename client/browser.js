@@ -1,4 +1,6 @@
-document.getElementById('pinch-count')
+'use strict';
+
+const pinchCount = document.getElementById('pinch-count')
 
 document.getElementById('code').innerHTML = `Mobile code: <span>${imperio.nonce}</span>`;
 
@@ -15,7 +17,8 @@ let omgString = '';
 function handlePinch(event) {
   console.log('pinch event'); 
   console.log(event);
-
+  omgString += 'omg ';
+  pinchCount.innerHTML = omgString;
 }
 
 imperio.desktopSwipeHandler(handleSwipe);
