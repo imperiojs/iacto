@@ -13,8 +13,10 @@ imperio.desktopRoomSetup(imperio.socket, imperio.room);
 
 function handleSwipe(event) {
   swipeText.style.color = 'yellow';
-  setTimeout(() => { swipeText.style.color = 'grey'; }, 500);
+  setTimeout(() => { swipeText.style.color = 'grey'; }, 250);
 }
+
+imperio.desktopSwipeHandler(handleSwipe);
 
 const initialize = unmatrix(panZoom)
 let scale = initialize.scaleX;
@@ -22,9 +24,21 @@ let inPinch = false;
 let panLocation = [initialize.translateX, initialize.translateY];
 let inPan = false;
 let rotationAngle = initialize.rotate;
+let lastAngle = initialize.rotate;
 let inRotate = false;
 
 function handlePinch(event) {
+  console.log(event);
+  if (event.start) {
+    inPinch = true;
+    pinchText.style.color = 'yellow';
+  }
+  if (event.end) {
+    inPinch = false;
+    const transform = unmatrix(panZoom);
+    scale = transform.scaleX;
+    pinchText.style.color = 'grey';
+  }
   if (inPinch) {
     const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
     const rotateString = `rotate(${rotationAngle}deg)`;
@@ -33,26 +47,20 @@ function handlePinch(event) {
   }
 }
 
-function handlePinchStart(event) {
-  inPinch = true;
-  pinchText.style.color = 'yellow';
-}
-
-function handlePinchEnd(event) {
-  inPinch = false;
-  const transform = unmatrix(panZoom);
-  scale = transform.scaleX;
-  pinchText.style.color = 'grey';  
-}
-
-
-imperio.desktopSwipeHandler(handleSwipe);
 imperio.desktopPinchHandler(handlePinch);
-imperio.desktopPinchStartHandler(handlePinchStart);
-imperio.desktopPinchEndHandler(handlePinchEnd);
-
 
 function handlePan(event) {
+  if (event.start) {
+    inPan = true;
+    panText.style.color = 'yellow';
+  }
+  if (event.end) {
+    inPan = false;
+    const transform = unmatrix(panZoom);  
+    panLocation[0] = transform.translateX;
+    panLocation[1] = transform.translateY;
+    panText.style.color = 'grey';
+  }
   if (inPan) {
     const translateString = `translate(${panLocation[0] + event.deltaX}px, ${panLocation[1] + event.deltaY}px)`;
     const rotateString = `rotate(${rotationAngle}deg)`;
@@ -61,43 +69,31 @@ function handlePan(event) {
   }
 }
 
-function handlePanStart(event) {
-  inPan = true;
-  panText.style.color = 'yellow';
-}
-
-function handlePanEnd(event) {
-  inPan = false;
-  const transform = unmatrix(panZoom);  
-  panLocation[0] = transform.translateX;
-  panLocation[1] = transform.translateY;
-  panText.style.color = 'grey';  
-}
-
-imperio.desktopPanStartHandler(handlePanStart);
-imperio.desktopPanEndHandler(handlePanEnd);
 imperio.desktopPanHandler(handlePan);
-
 
 function handleRotate(event) {
   if (inRotate) {
+    // lastAngle = rotationAngle + event.rotation;
     const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
     const rotateString = `rotate(${rotationAngle + event.rotation}deg)`;
     const scaleString = `scale(${scale})`;
     panZoom.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    console.log(event.rotation);
   }
 }
 
 function handleRotateStart(event) {
   inRotate = true;
   rotateText.style.color = 'yellow';
+  console.log('rotate');
 }
 
 function handleRotateEnd(event) {
   inRotate = false;
   const transform = unmatrix(panZoom);
   rotationAngle = transform.rotate;
-  rotateText.style.color = 'grey';  
+  rotateText.style.color = 'grey';
+  console.log('rotate End');
 }
 
 imperio.desktopRotateHandler(handleRotate);
