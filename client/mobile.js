@@ -3,7 +3,7 @@ var swipeDiv = document.getElementById('swipe-box');
 var rotateDiv = document.getElementById('rotate-box');
 var pinchDiv = document.getElementById('pinch-box');
 
-imperio.mobileRoomSetup();
+imperio.emitRoomSetup();
 
 function swipeCount() {
   console.log('in swipeCount');
@@ -25,15 +25,15 @@ function handlePress (event) {
   console.log('detecting press');
 }
 
-imperio.curse('swipe', swipeDiv, swipeCount);
+imperio.gesture('swipe', swipeDiv, swipeCount);
 
-imperio.curse('pinch', pinchDiv, handlePinch);
+imperio.gesture('pinch', pinchDiv, handlePinch);
 
-imperio.curse('pan', panDiv, handlePan);
+imperio.gesture('pan', panDiv, handlePan);
 
-imperio.curse('rotate', rotateDiv, handleRotate);
+imperio.gesture('rotate', rotateDiv, handleRotate);
 
-imperio.curse('press', panDiv, handlePress);
-imperio.curse('pressUp', panDiv, handlePress);
+imperio.gesture('press', panDiv, handlePress);
+imperio.gesture('pressUp', panDiv, handlePress);
 
 // imperio.webRTCConnect();
