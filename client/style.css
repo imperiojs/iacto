@@ -1,5 +1,16 @@
 * {
-  font-family: "Times New Roman", sans-serif;
+  font-family: "Helvetica", sans-serif;
+}
+
+#code {
+  margin:0 0;
+}
+
+#current-event {
+  height:40px;
+  width:200px;
+  margin: 0 auto;
+  text-align:center;
 }
 
 #pan-zoom {

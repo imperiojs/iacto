@@ -15,9 +15,9 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.4.2",
     "express": "^4.14.0",
-    "imperio": "^0.1.0",
-    "ejs": "^2.4.2"
+    "imperio": "^0.2.2"
   },
   "devDependencies": {
     "nodemon": "^1.9.2",

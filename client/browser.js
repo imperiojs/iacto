@@ -11,6 +11,7 @@ const panExample = document.getElementById('pan-example');
 const rotateExample = document.getElementById('rotate-example');
 const pressExample = document.getElementById('press-example');
 const tapExample = document.getElementById('tap-example');
+const currentEvent = document.getElementById('current-event');
 const mainColor = 'white';
 const activeColor = '#FEE123';
 swipeExample.style.backgroundColor = mainColor;
@@ -30,9 +31,11 @@ function handleSwipe(event) {
   swipeExample.style.backgroundColor = activeColor;  
   swipeExample.style.transition = `transform ${timing / 1000}s`;
   swipeExample.style.transform = `${skewString} ${xPosString}`;
+  currentEvent.innerHTML = 'SWIPE';
   setTimeout(() => {
     swipeExample.style.transform = `skewX(0deg) translate(0px, 0px)`;
     swipeExample.style.backgroundColor = mainColor;    
+    currentEvent.innerHTML = '';
   }, timing);
 }
 
@@ -51,10 +54,12 @@ let inRotate = false;
 function handlePinch(event) {
   if (event.start) {
     inPinch = true;
-    pinchExample.style.backgroundColor = activeColor;          
+    pinchExample.style.backgroundColor = activeColor;
+    currentEvent.innerHTML = 'PINCH';         
   }
   if (event.end) {
     inPinch = false;
+    currentEvent.innerHTML = '';             
     pinchExample.style.backgroundColor = mainColor ;   
     const transform = unmatrix(pinchExample);
     scale = transform.scaleX;
@@ -70,7 +75,8 @@ imperio.pinchListener(handlePinch);
 function handlePan(event) {
   if (event.start) {
     inPan = true;
-    panExample.style.backgroundColor = activeColor;  
+    panExample.style.backgroundColor = activeColor;
+    currentEvent.innerHTML = 'PAN';    
   }
   if (event.end) {
     inPan = false;
@@ -78,6 +84,7 @@ function handlePan(event) {
     const transform = unmatrix(panExample);  
     panLocation[0] = transform.translateX;
     panLocation[1] = transform.translateY;
+    currentEvent.innerHTML = '';    
   }
   if (inPan) {
     const translateString = `translate(${panLocation[0] + event.deltaX}px, ${panLocation[1] + event.deltaY}px)`;
@@ -90,17 +97,17 @@ imperio.panListener(handlePan);
 function handleRotate(event) {
   if (event.start) {
     inRotate = true;
-    rotateExample.style.backgroundColor = activeColor;      
-    const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
+    rotateExample.style.backgroundColor = activeColor;
     const rotateString = `rotate(${rotationAngle + event.rotation}deg)`;
-    const scaleString = `scale(${scale})`;
-    rotateExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    rotateExample.style.transform = `${rotateString}`;
+    currentEvent.innerHTML = 'ROTATE';    
   }
   if (event.end) {
     inRotate = false;
     rotateExample.style.backgroundColor = mainColor;
     const transform = unmatrix(rotateExample);  
     rotationAngle = transform.rotate;
+    currentEvent.innerHTML = '';   
   }
   if (inRotate) {
     const rotateString = `rotate(${rotationAngle + event.rotation}deg)`;
@@ -114,12 +121,14 @@ function handlePress(event) {
   pressExample.style.backgroundColor = activeColor;
   pressExample.style.height = '300px';
   pressExample.style.width = '300px';
+  currentEvent.innerHTML = 'PRESS'; 
 }
 
 function handlePressUp(event) {
   pressExample.style.backgroundColor = mainColor;
-  pressExample.style.height = '100px';
-  pressExample.style.width = '100px';
+  pressExample.style.height = '125px';
+  pressExample.style.width = '125px';
+  currentEvent.innerHTML = '';  
 }
 
 imperio.pressListener(handlePress);
@@ -129,10 +138,12 @@ function handleTap(event) {
   tapExample.style.backgroundColor = activeColor;
   tapExample.style.height = '40px';
   tapExample.style.width = '400px';
+  currentEvent.innerHTML = 'TAP';
   setTimeout(() => {
     tapExample.style.height = '125px';
     tapExample.style.width = '125px'; 
     tapExample.style.backgroundColor = mainColor;
+    currentEvent.innerHTML = '';    
   }, 250);
 }
 
