@@ -2,38 +2,23 @@ var panDiv = document.getElementById('pan-box');
 var swipeDiv = document.getElementById('swipe-box');
 var rotateDiv = document.getElementById('rotate-box');
 var pinchDiv = document.getElementById('pinch-box');
+var tapDiv = document.getElementById('tap-box');
 
 imperio.emitRoomSetup();
 
-function swipeCount() {
-  console.log('in swipeCount');
-};
+imperio.gesture('swipe', swipeDiv);
 
-function handlePinch (event) {
-  console.log('detecting pinch');
-}
+imperio.gesture('pinch', pinchDiv);
 
-function handlePan (event) {
-  console.log('detecting pan');
-}
+imperio.gesture('pan', panDiv);
 
-function handleRotate (event) {
-  console.log('detecting rotation');
-}
+imperio.gesture('rotate', rotateDiv);
 
-function handlePress (event) {
-  console.log('detecting press');
-}
+imperio.gesture('press', panDiv);
+imperio.gesture('pressUp', panDiv);
 
-imperio.gesture('swipe', swipeDiv, swipeCount);
+tapDiv.addEventListener('click', imperio.emitTap);
 
-imperio.gesture('pinch', pinchDiv, handlePinch);
+imperio.emitAcceleration.gravity();
 
-imperio.gesture('pan', panDiv, handlePan);
-
-imperio.gesture('rotate', rotateDiv, handleRotate);
-
-imperio.gesture('press', panDiv, handlePress);
-imperio.gesture('pressUp', panDiv, handlePress);
-
-// imperio.webRTCConnect();
+imperio.emitTap()

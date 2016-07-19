@@ -9,18 +9,18 @@ const path = require('path');
 // Uncomment or edit these lines to refer to the desired library version:
 // **********************************************************************
 // Path to npm module:
-// const imperio = require('imperio')(server);
+const imperio = require('imperio')(server);
 // Path to local (in-development) version of the repository
-const imperio = require('./../../imperio/index.js')(server);
+// const imperio = require('./../../imperio/index.js')(server);
 
 // ****************** READ THIS, TEAM IMPERIO!! *************************
 // You need to adjust the path to the desired front-end build, like above
 //  Should lead to the ROOT directory of the imperio library (not /dist)
 // **********************************************************************
 // Path to npm module:
-// app.use(express.static(path.join(`${__dirname}/../node_modules/imperio`)));
+app.use(express.static(path.join(`${__dirname}/../node_modules/imperio`)));
 // Path to local (in-development) version of the repository
-app.use(express.static(path.join(`${__dirname}/../../imperio`)));
+// app.use(express.static(path.join(`${__dirname}/../../imperio`)));
 
 /* ----------------------------------
  * -----   Global Middleware   ------
