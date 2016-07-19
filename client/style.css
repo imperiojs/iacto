@@ -1,15 +1,18 @@
+* {
+  font-family: "Times New Roman", sans-serif;
+}
+
 #pan-zoom {
   background-color:black;
-  height:100px;
-  width:100px;
+  height:125px;
+  width:125px;
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
 }
 
 #swipe-example {
-  /*background-color:blue;*/
-  height:100px;
-  width:100px;
+  height:125px;
+  width:125px;
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
   transition:transform 0.25s;
@@ -20,8 +23,8 @@
 }
 
 #pinch-example {
-  height:100px;
-  width:100px;
+  height:125px;
+  width:125px;
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
   background-image: url("http://hammerjs.github.io/assets/img/pinch.svg");
@@ -31,8 +34,8 @@
 }
 
 #pan-example {
-  height:100px;
-  width:100px;
+  height:125px;
+  width:125px;
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
   background-image: url("http://hammerjs.github.io/assets/img/pan.svg");
@@ -42,8 +45,8 @@
 }
 
 #rotate-example {
-  height:100px;
-  width:100px;
+  height:125px;
+  width:125px;
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
   background-image: url("http://hammerjs.github.io/assets/img/rotate.svg");
@@ -53,8 +56,8 @@
 }
 
 #press-example {
-  height:100px;
-  width:100px;
+  height:125px;
+  width:125px;
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
   background-image: url("");
@@ -62,6 +65,19 @@
   border: 1px black solid;
   border-radius:15px;
   margin-top:20px;
+}
+
+#tap-example {
+  height:125px;
+  width:125px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+  background-image: url("");
+  background-image: url("http://hammerjs.github.io/assets/img/tap.svg");  
+  border: 1px black solid;
+  border-radius:15px;
+  margin-top:20px;
+  transition:height 0.25s, width 0.25s;
 }
 
 p {
@@ -105,7 +121,10 @@ p {
   font-size:5em;  
 }
 
-iframe {
-  height:500px;
-  width:700px;
+#tap-box {
+  color:yellow;
+  background-color: green;
+  width:50%;
+  height:4em;
+  font-size:5em;  
 }
