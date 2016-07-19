@@ -19,4 +19,6 @@ imperio.gesture('pressUp', panDiv);
 
 tapDiv.addEventListener('click', imperio.emitTap);
 
+imperio.emitAcceleration.gravity();
+
 imperio.emitTap()

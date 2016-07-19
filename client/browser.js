@@ -145,9 +145,37 @@ function handleTap(event) {
     tapExample.style.backgroundColor = mainColor;
     currentEvent.innerHTML = '';    
   }, 250);
+
+  imperio.accelerationListener(measureAccelAndRemoveGestures); 
 }
 
 imperio.tapListener(handleTap);
+
+let accelTimes = 0;
+
+function measureAccelAndRemoveGestures(event) {
+  // console.log(event);
+  if (accelTimes > 0) return;
+  if (event.x > 25 || event.y > 25) {
+    const offPage = 2000;
+    const timing = '8';
+    swipeExample.style.transition = `transform ${timing}s`;
+    panExample.style.transition = `transform ${timing}s`;
+    pinchExample.style.transition = `transform ${timing}s`;
+    rotateExample.style.transition = `transform ${timing}s`;
+    pressExample.style.transition = `transform ${timing}s`;
+    tapExample.style.transition = `transform ${timing}s`;
+    swipeExample.style.transform = `translate(${offPage}px, ${-offPage}px)`;
+    panExample.style.transform = `translate(${-offPage}px, 0px)`;
+    pinchExample.style.transform = `translate(${offPage}px, 0px)`;
+    rotateExample.style.transform = `translate(${-offPage}px, 0px)`;
+    pressExample.style.transform = `translate(${offPage}px, 0px)`;
+    tapExample.style.transform = `translate(${-offPage}px, 0px)`;
+    accelTimes += 1;
+    // imperio.gyroscopeListener;
+  }
+
+}
 
 function unmatrix(el) {
   return 'string' != typeof el
