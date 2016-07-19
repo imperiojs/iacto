@@ -5,6 +5,45 @@
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
 }
+#swipe-example {
+  background-color:blue;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#pinch-example {
+  background-color:purple;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#pan-example {
+  background-color:red;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#rotate-example {
+  background-color:yellow;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#press-example {
+  background-color:green;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
 
 p {
   margin-top:0.15em;
@@ -14,5 +53,40 @@ p {
   font-weight:bold;
 }
 
+/*mobile div for gestures*/
+#swipe-box {
+  color:yellow;
+  background-color: blue;
+  width:100%;
+  height:2.5em;
+  font-size:5em;
+}
 
+#rotate-box {
+  color:black;
+  background-color: red;
+  width:100%;
+  height:6em;
+  font-size:5em;  
+}
 
+#pan-box {
+  color:white;
+  background-color: black;
+  width:80%;
+  height:6em;
+  font-size:5em;  
+}
+
+#pinch-box {
+  color:yellow;
+  background-color: purple;
+  width:100%;
+  height:6em;
+  font-size:5em;  
+}
+
+iframe {
+  height:500px;
+  width:700px;
+}
