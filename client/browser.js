@@ -1,6 +1,6 @@
 'use strict';
 
-imperio.desktopRoomSetup();
+imperio.listenerRoomSetup();
 
 const elements = {};
 const swipeExample = document.getElementById('swipe-example');
@@ -8,20 +8,27 @@ const pinchExample = document.getElementById('pinch-example');
 const panExample = document.getElementById('pan-example');
 const rotateExample = document.getElementById('rotate-example');
 const pressExample = document.getElementById('press-example');
-const swipeText = document.getElementById('swipe-text');
-const pinchText = document.getElementById('pinch-text');
-const panText = document.getElementById('pan-text');
-const rotateText = document.getElementById('rotate-text');
-const pressText = document.getElementById('press-text');
+const activeColor = 'yellow';
 
 document.getElementById('code').innerHTML = `Mobile code: <span>${imperio.nonce}</span>`;
 
 function handleSwipe(event) {
-  swipeText.style.color = 'yellow';
-  setTimeout(() => { swipeText.style.color = 'grey'; }, 250);
+  const multiplier = event.deltaX > 0 ? 1 : -1; //1 for left, -1 for right
+  //magnitude estimates intensity of swipe on a 0-1 scale;
+  const magnitude = multiplier * (5 * (Math.abs(event.velocityX) / 10) + 5 * (event.distance / 1000)) / 10;
+  const skewString = `skewX(${-1 * magnitude * 80}deg)`;
+  const xPosString = `translate(${magnitude * 750}px, 0px)`;
+  const timing = 150 + 400 * Math.abs(magnitude);
+  swipeExample.style.backgroundColor = activeColor;  
+  swipeExample.style.transition = `transform ${timing / 1000}s`;
+  swipeExample.style.transform = `${skewString} ${xPosString}`;
+  setTimeout(() => {
+    swipeExample.style.transform = `skewX(0deg) translate(0px, 0px)`;
+    swipeExample.style.backgroundColor = 'white';    
+  }, timing);
 }
 
-imperio.desktopSwipeHandler(handleSwipe);
+imperio.swipeListener(handleSwipe);
 
 const initializePinch = unmatrix(pinchExample);
 const initializePan = unmatrix(panExample);
@@ -36,87 +43,79 @@ let inRotate = false;
 function handlePinch(event) {
   if (event.start) {
     inPinch = true;
-    pinchText.style.color = 'yellow';
+    pinchExample.style.backgroundColor = activeColor;          
   }
   if (event.end) {
     inPinch = false;
+    pinchExample.style.backgroundColor = 'white'    
     const transform = unmatrix(pinchExample);
     scale = transform.scaleX;
-    pinchText.style.color = 'grey';
   }
   if (inPinch) {
-    const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
-    const rotateString = `rotate(${rotationAngle}deg)`;
     const scaleString = `scale(${scale * event.scale})`;
-    pinchExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    pinchExample.style.transform = `${scaleString}`;
   }
 }
 
-imperio.desktopPinchHandler(handlePinch);
+imperio.pinchListener(handlePinch);
 
 function handlePan(event) {
   if (event.start) {
     inPan = true;
-    panText.style.color = 'yellow';
+    panExample.style.backgroundColor = activeColor;  
   }
   if (event.end) {
     inPan = false;
+    panExample.style.backgroundColor = 'white';  
     const transform = unmatrix(panExample);  
     panLocation[0] = transform.translateX;
     panLocation[1] = transform.translateY;
-    panText.style.color = 'grey';
   }
   if (inPan) {
     const translateString = `translate(${panLocation[0] + event.deltaX}px, ${panLocation[1] + event.deltaY}px)`;
-    const rotateString = `rotate(${rotationAngle}deg)`;
-    const scaleString = `scale(${scale})`;
-    panExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    panExample.style.transform = `${translateString}`;
   }
 }
 
-imperio.desktopPanHandler(handlePan);
+imperio.panListener(handlePan);
 
 function handleRotate(event) {
   if (event.start) {
     inRotate = true;
+    rotateExample.style.backgroundColor = activeColor;      
     const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
     const rotateString = `rotate(${rotationAngle + event.rotation}deg)`;
     const scaleString = `scale(${scale})`;
     rotateExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
-    rotateText.style.color = 'black';
   }
   if (event.end) {
     inRotate = false;
+    rotateExample.style.backgroundColor = 'white';
     const transform = unmatrix(rotateExample);  
     rotationAngle = transform.rotate;
-    rotateText.style.color = 'grey';
   }
   if (inRotate) {
-    const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
     const rotateString = `rotate(${rotationAngle + event.rotation}deg)`;
-    const scaleString = `scale(${scale})`;
-    rotateExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    rotateExample.style.transform = `${rotateString}`;
   }
 }
 
-imperio.desktopRotateHandler(handleRotate);
+imperio.rotateListener(handleRotate);
 
 function handlePress(event) {
-  pressExample.style.backgroundColor = 'yellow';
-  pressExample.style.height = '200px';
-  pressExample.style.width = '200px';
-  pressText.style.color = 'black';
+  pressExample.style.backgroundColor = activeColor;
+  pressExample.style.height = '300px';
+  pressExample.style.width = '300px';
 }
 
 function handlePressUp(event) {
-  pressExample.style.backgroundColor = 'green';
+  pressExample.style.backgroundColor = 'white';
   pressExample.style.height = '100px';
   pressExample.style.width = '100px';
-  pressText.style.color = 'grey';
 }
 
-imperio.desktopPressHandler(handlePress);
-imperio.desktopPressUpHandler(handlePressUp);
+imperio.pressListener(handlePress);
+imperio.pressUpListener(handlePressUp);
 
 function unmatrix(el) {
   return 'string' != typeof el
