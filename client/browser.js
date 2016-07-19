@@ -1,6 +1,13 @@
 'use strict';
 
-const panZoom = document.getElementById('pan-zoom');
+imperio.desktopRoomSetup();
+
+const elements = {};
+const swipeExample = document.getElementById('swipe-example');
+const pinchExample = document.getElementById('pinch-example');
+const panExample = document.getElementById('pan-example');
+const rotateExample = document.getElementById('rotate-example');
+const pressExample = document.getElementById('press-example');
 const swipeText = document.getElementById('swipe-text');
 const pinchText = document.getElementById('pinch-text');
 const panText = document.getElementById('pan-text');
@@ -9,8 +16,6 @@ const pressText = document.getElementById('press-text');
 
 document.getElementById('code').innerHTML = `Mobile code: <span>${imperio.nonce}</span>`;
 
-imperio.desktopRoomSetup(imperio.socket, imperio.room);
-
 function handleSwipe(event) {
   swipeText.style.color = 'yellow';
   setTimeout(() => { swipeText.style.color = 'grey'; }, 250);
@@ -18,24 +23,24 @@ function handleSwipe(event) {
 
 imperio.desktopSwipeHandler(handleSwipe);
 
-const initialize = unmatrix(panZoom)
-let scale = initialize.scaleX;
+const initializePinch = unmatrix(pinchExample);
+const initializePan = unmatrix(panExample);
+const initializeRotate = unmatrix(rotateExample);
+let scale = initializePinch.scaleX;
 let inPinch = false;
-let panLocation = [initialize.translateX, initialize.translateY];
+let panLocation = [initializePan.translateX, initializePan.translateY];
 let inPan = false;
-let rotationAngle = initialize.rotate;
-let lastAngle = initialize.rotate;
+let rotationAngle = initializeRotate.rotate;
 let inRotate = false;
 
 function handlePinch(event) {
-  console.log(event);
   if (event.start) {
     inPinch = true;
     pinchText.style.color = 'yellow';
   }
   if (event.end) {
     inPinch = false;
-    const transform = unmatrix(panZoom);
+    const transform = unmatrix(pinchExample);
     scale = transform.scaleX;
     pinchText.style.color = 'grey';
   }
@@ -43,7 +48,7 @@ function handlePinch(event) {
     const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
     const rotateString = `rotate(${rotationAngle}deg)`;
     const scaleString = `scale(${scale * event.scale})`;
-    panZoom.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    pinchExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
   }
 }
 
@@ -56,7 +61,7 @@ function handlePan(event) {
   }
   if (event.end) {
     inPan = false;
-    const transform = unmatrix(panZoom);  
+    const transform = unmatrix(panExample);  
     panLocation[0] = transform.translateX;
     panLocation[1] = transform.translateY;
     panText.style.color = 'grey';
@@ -65,57 +70,49 @@ function handlePan(event) {
     const translateString = `translate(${panLocation[0] + event.deltaX}px, ${panLocation[1] + event.deltaY}px)`;
     const rotateString = `rotate(${rotationAngle}deg)`;
     const scaleString = `scale(${scale})`;
-    panZoom.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    panExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
   }
 }
 
 imperio.desktopPanHandler(handlePan);
 
 function handleRotate(event) {
-  if (inRotate) {
-    // lastAngle = rotationAngle + event.rotation;
+  if (event.start) {
+    inRotate = true;
     const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
     const rotateString = `rotate(${rotationAngle + event.rotation}deg)`;
     const scaleString = `scale(${scale})`;
-    panZoom.style.transform = `${translateString} ${rotateString} ${scaleString}`;
-    console.log(event.rotation);
+    rotateExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
+    rotateText.style.color = 'black';
+  }
+  if (event.end) {
+    inRotate = false;
+    const transform = unmatrix(rotateExample);  
+    rotationAngle = transform.rotate;
+    rotateText.style.color = 'grey';
+  }
+  if (inRotate) {
+    const translateString = `translate(${panLocation[0]}px, ${panLocation[1]}px)`;
+    const rotateString = `rotate(${rotationAngle + event.rotation}deg)`;
+    const scaleString = `scale(${scale})`;
+    rotateExample.style.transform = `${translateString} ${rotateString} ${scaleString}`;
   }
 }
 
-function handleRotateStart(event) {
-  inRotate = true;
-  rotateText.style.color = 'yellow';
-  console.log('rotate');
-}
-
-function handleRotateEnd(event) {
-  inRotate = false;
-  const transform = unmatrix(panZoom);
-  rotationAngle = transform.rotate;
-  rotateText.style.color = 'grey';
-  console.log('rotate End');
-}
-
 imperio.desktopRotateHandler(handleRotate);
-imperio.desktopRotateStartHandler(handleRotateStart);
-imperio.desktopRotateEndHandler(handleRotateEnd);
 
 function handlePress(event) {
-  panZoom.style.backgroundColor = 'yellow';
+  pressExample.style.backgroundColor = 'yellow';
+  pressExample.style.height = '200px';
+  pressExample.style.width = '200px';
   pressText.style.color = 'black';
-  swipeText.style.color = 'yellow';
-  pinchText.style.color = 'yellow';
-  panText.style.color = 'yellow';
-  rotateText.style.color = 'yellow';
 }
 
 function handlePressUp(event) {
-  panZoom.style.backgroundColor = 'black';
+  pressExample.style.backgroundColor = 'green';
+  pressExample.style.height = '100px';
+  pressExample.style.width = '100px';
   pressText.style.color = 'grey';
-  swipeText.style.color = 'grey';
-  pinchText.style.color = 'grey';
-  panText.style.color = 'grey';
-  rotateText.style.color = 'grey';
 }
 
 imperio.desktopPressHandler(handlePress);
@@ -206,3 +203,10 @@ function rtod(radians) {
 function round(n) {
   return Math.round(n * 100) / 100;
 }
+
+// imperio.webRTCConnect();
+
+// var connectType = document.getElementById('connectionType');
+// setInterval(() => {
+//   connectType.innerHTML = `connected via ${imperio.connectionType}`;
+// }, 500);

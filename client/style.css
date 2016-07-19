@@ -5,6 +5,45 @@
   margin:0 auto;
   transform: translate(0px, 0px) rotate(0deg) scale(1);
 }
+#swipe-example {
+  background-color:blue;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#pinch-example {
+  background-color:purple;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#pan-example {
+  background-color:red;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#rotate-example {
+  background-color:yellow;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
+
+#press-example {
+  background-color:green;
+  height:100px;
+  width:100px;
+  margin:0 auto;
+  transform: translate(0px, 0px) rotate(0deg) scale(1);
+}
 
 p {
   margin-top:0.15em;
@@ -47,5 +86,7 @@ p {
   font-size:5em;  
 }
 
-
-
+iframe {
+  height:500px;
+  width:700px;
+}
