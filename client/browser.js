@@ -12,6 +12,7 @@ const rotateExample = document.getElementById('rotate-example');
 const pressExample = document.getElementById('press-example');
 const tapExample = document.getElementById('tap-example');
 const currentEvent = document.getElementById('current-event');
+const cubeContainer = document.getElementById('cube-container');
 const mainColor = 'white';
 const activeColor = '#FEE123';
 swipeExample.style.backgroundColor = mainColor;
@@ -154,27 +155,26 @@ imperio.tapListener(handleTap);
 let accelTimes = 0;
 
 function measureAccelAndRemoveGestures(event) {
-  // console.log(event);
   if (accelTimes > 0) return;
   if (event.x > 25 || event.y > 25) {
     const offPage = 2000;
-    const timing = '8';
+    const timing = '7';
     swipeExample.style.transition = `transform ${timing}s`;
     panExample.style.transition = `transform ${timing}s`;
     pinchExample.style.transition = `transform ${timing}s`;
     rotateExample.style.transition = `transform ${timing}s`;
     pressExample.style.transition = `transform ${timing}s`;
     tapExample.style.transition = `transform ${timing}s`;
-    swipeExample.style.transform = `translate(${offPage}px, ${-offPage}px)`;
-    panExample.style.transform = `translate(${-offPage}px, 0px)`;
-    pinchExample.style.transform = `translate(${offPage}px, 0px)`;
-    rotateExample.style.transform = `translate(${-offPage}px, 0px)`;
-    pressExample.style.transform = `translate(${offPage}px, 0px)`;
-    tapExample.style.transform = `translate(${-offPage}px, 0px)`;
+    swipeExample.style.transform = `translate(${-offPage}px, 0px)`;
+    panExample.style.transform = `translate(${offPage}px, ${offPage}px)`;
+    pinchExample.style.transform = `translate(${offPage}px, ${-offPage}0px)`;
+    rotateExample.style.transform = `translate(${-offPage}px, ${offPage}px)`;
+    pressExample.style.transform = `translate(${-offPage}px, ${-offPage}px)`;
+    tapExample.style.transform = `translate(${offPage}px, 0px)`;
     accelTimes += 1;
-    // imperio.gyroscopeListener;
+    imperio.gyroscopeListener(gyroFunctions);
+    cubeContainer.style.opacity = '1';
   }
-
 }
 
 function unmatrix(el) {
@@ -263,9 +263,61 @@ function round(n) {
   return Math.round(n * 100) / 100;
 }
 
-// imperio.webRTCConnect();
+let alphaDiff = 0;
+let betaDiff = 0;
+let gammaDiff = 0;
 
-// var connectType = document.getElementById('connectionType');
-// setInterval(() => {
-//   connectType.innerHTML = `connected via ${imperio.connectionType}`;
-// }, 500);
+function initializeArray(length) {
+  let newArray = [];
+  for (let i = 0; i < length; i++) {
+    newArray.push(0);
+  }
+  return newArray;
+}
+
+const runningDataSize = 3;
+let alphaDataArray = initializeArray(runningDataSize);
+let betaDataArray = initializeArray(runningDataSize);
+let gammaDataArray = initializeArray(runningDataSize);
+let gyroscopeDataStore = [alphaDataArray, betaDataArray, gammaDataArray];
+let gyroscopeAverages = initializeArray(3);
+
+function runningAverage(newData, dataArray) {
+  const length = dataArray.length;
+  dataArray.shift();
+  dataArray.push(newData);
+  return (dataArray.reduce((a, b) => {return a + b;})) / length;
+}
+
+// Running average function stacks most recent acceleration points and calcs avg
+function calculateRunningAverages(dataObject, dataArray) {
+  let i = 0;
+  for (let key in dataObject) {
+    gyroscopeAverages[i] = runningAverage(dataObject[key], dataArray[i]);
+    i++;
+  }
+}
+
+function gyroFunctions(gyroDataObject) {
+  calculateRunningAverages(gyroDataObject, gyroscopeDataStore);
+}
+
+const bodyElement = document.querySelector('body');
+const cube = document.getElementById('cube');
+
+// Removes and adds one data point to each dataset in the chart
+function addData() {
+  let alphaAvg = gyroscopeAverages[0], betaAvg = gyroscopeAverages[1], gammaAvg = gyroscopeAverages[2];
+  cube.style.transform = `translateZ(-100px) rotateX(${gammaAvg + gammaDiff}deg) rotateY(${alphaAvg + alphaDiff}deg) rotateZ(${betaAvg + betaDiff}deg)`;
+}
+
+// Set interval to re-render chart
+setInterval(addData, 40);
+
+function calibrateGyro() {
+  alphaDiff = 0 - gyroscopeAverages[0];
+  betaDiff = 0 - gyroscopeAverages[1];
+  gammaDiff = 0 - gyroscopeAverages[2];
+}
+
+cube.addEventListener('click', calibrateGyro);

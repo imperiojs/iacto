@@ -17,8 +17,7 @@ imperio.gesture('rotate', rotateDiv);
 imperio.gesture('press', panDiv);
 imperio.gesture('pressUp', panDiv);
 
-tapDiv.addEventListener('click', imperio.emitTap);
+imperio.gesture('tap', tapDiv);
 
 imperio.emitAcceleration.gravity();
-
-imperio.emitTap()
+imperio.emitGyroscope();
