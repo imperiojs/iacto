@@ -154,27 +154,87 @@ imperio.tapListener(handleTap);
 
 let accelTimes = 0;
 
+const fake = document.getElementById('fake');
+const gesture = document.getElementById('gesture-container');
+
 function measureAccelAndRemoveGestures(event) {
   if (accelTimes > 0) return;
   if (event.x > 25 || event.y > 25) {
     const offPage = 2000;
-    const timing = '7';
+    const timing = '3';
     swipeExample.style.transition = `transform ${timing}s`;
     panExample.style.transition = `transform ${timing}s`;
     pinchExample.style.transition = `transform ${timing}s`;
     rotateExample.style.transition = `transform ${timing}s`;
     pressExample.style.transition = `transform ${timing}s`;
     tapExample.style.transition = `transform ${timing}s`;
-    swipeExample.style.transform = `translate(${-offPage}px, 0px)`;
-    panExample.style.transform = `translate(${offPage}px, ${offPage}px)`;
-    pinchExample.style.transform = `translate(${offPage}px, ${-offPage}0px)`;
-    rotateExample.style.transform = `translate(${-offPage}px, ${offPage}px)`;
-    pressExample.style.transform = `translate(${-offPage}px, ${-offPage}px)`;
-    tapExample.style.transform = `translate(${offPage}px, 0px)`;
+    fake.style.display = `block`;
+    fake.style.margin = `0 auto`;
+    fake.style.width = `150px`;
+    fake.style.height = `150px`;
+    fake.style.position = `relative`;
+    fake.style.perspective = `1000px`;
+    gesture.style.width = `100%`;
+    gesture.style.height = `100%`;
+    gesture.style.transformStyle = `preserve-3d`;
+
+    swipeExample.style.display = `block`;
+    swipeExample.style.position = `absolute`;
+    swipeExample.style.width = `150px`;
+    swipeExample.style.height = `150px`;
+    swipeExample.style.lineHeight = `200px`;
+    swipeExample.style.transform = `rotateY(0deg) translateZ(450px)`;
+
+    panExample.style.display = `block`;
+    panExample.style.position = `absolute`;
+    panExample.style.width = `150px`;
+    panExample.style.height = `150px`;
+    panExample.style.lineHeight = `200px`;
+    panExample.style.transform = `rotateY(60deg) translateZ(450px)`;
+
+    pinchExample.style.display = `block`;
+    pinchExample.style.position = `absolute`;
+    pinchExample.style.width = `150px`;
+    pinchExample.style.height = `150px`;
+    pinchExample.style.lineHeight = `200px`;
+    pinchExample.style.transform = `rotateY(120deg) translateZ(450px)`;
+
+    rotateExample.style.display = `block`;
+    rotateExample.style.position = `absolute`;
+    rotateExample.style.width = `150px`;
+    rotateExample.style.height = `150px`;
+    rotateExample.style.lineHeight = `200px`;
+    rotateExample.style.transform = `rotateY(180deg) translateZ(450px)`;
+
+    pressExample.style.display = `block`;
+    pressExample.style.position = `absolute`;
+    pressExample.style.width = `150px`;
+    pressExample.style.height = `150px`;
+    pressExample.style.lineHeight = `200px`;
+    pressExample.style.transform = `rotateY(240deg) translateZ(450px)`;
+
+    tapExample.style.display = `block`;
+    tapExample.style.position = `absolute`;
+    tapExample.style.width = `150px`;
+    tapExample.style.height = `150px`;
+    tapExample.style.lineHeight = `200px`;
+    tapExample.style.transform = `rotateY(300deg) translateZ(450px)`;
+
     accelTimes += 1;
     imperio.gyroscopeListener(gyroFunctions);
-    cubeContainer.style.opacity = '1';
+    setTimeout(startRotation, 3000)
+    
   }
+}
+
+function startRotation () {
+  swipeExample.style.border = `2px solid red`;
+  panExample.style.border = `2px solid red`;
+  pinchExample.style.border = `2px solid red`;
+  rotateExample.style.border = `2px solid red`;
+  pressExample.style.border = `2px solid red`;
+  tapExample.style.border = `2px solid red`;
+  setInterval(rotate, 40);
 }
 
 function unmatrix(el) {
@@ -302,22 +362,9 @@ function gyroFunctions(gyroDataObject) {
   calculateRunningAverages(gyroDataObject, gyroscopeDataStore);
 }
 
-const bodyElement = document.querySelector('body');
-const cube = document.getElementById('cube');
+var carousel = document.getElementById("carousel"),
+    currdeg  = 0;
 
-// Removes and adds one data point to each dataset in the chart
-function addData() {
-  let alphaAvg = gyroscopeAverages[0], betaAvg = gyroscopeAverages[1], gammaAvg = gyroscopeAverages[2];
-  cube.style.transform = `translateZ(-100px) rotateX(${gammaAvg + gammaDiff}deg) rotateY(${alphaAvg + alphaDiff}deg) rotateZ(${betaAvg + betaDiff}deg)`;
+function rotate(){
+  gesture.style.transform = `rotateY(${gyroscopeAverages[0]}deg)`;  
 }
-
-// Set interval to re-render chart
-setInterval(addData, 40);
-
-function calibrateGyro() {
-  alphaDiff = 0 - gyroscopeAverages[0];
-  betaDiff = 0 - gyroscopeAverages[1];
-  gammaDiff = 0 - gyroscopeAverages[2];
-}
-
-cube.addEventListener('click', calibrateGyro);
