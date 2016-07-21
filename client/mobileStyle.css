@@ -1,0 +1,41 @@
+
+/*mobile div for gestures*/
+#swipe-box {
+  color:yellow;
+  background-color: blue;
+  width:100%;
+  height:3em;
+  font-size:5em;
+}
+
+#rotate-box {
+  color:black;
+  background-color: red;
+  width:100%;
+  height:5em;
+  font-size:5em;  
+}
+
+#pan-box {
+  color:white;
+  background-color: black;
+  width:80%;
+  height:4em;
+  font-size:5em;  
+}
+
+#pinch-box {
+  color:yellow;
+  background-color: purple;
+  width:100%;
+  height:4em;
+  font-size:5em;  
+}
+
+#tap-box {
+  color:yellow;
+  background-color: green;
+  width:50%;
+  height:4em;
+  font-size:5em;  
+}

@@ -19,5 +19,5 @@ imperio.gesture('pressUp', panDiv);
 
 imperio.gesture('tap', tapDiv);
 
-imperio.emitAcceleration.gravity();
-imperio.emitGyroscope();
+// imperio.emitAcceleration.gravity();
+// imperio.emitGyroscope();

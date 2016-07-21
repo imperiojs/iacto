@@ -17,7 +17,7 @@ const mainColor = 'white';
 const activeColor = '#FEE123';
 swipeExample.style.backgroundColor = mainColor;
 pinchExample.style.backgroundColor = mainColor;
-panExample.style.backgroundColor = mainColor
+panExample.style.backgroundColor = mainColor;
 rotateExample.style.backgroundColor = mainColor;
 pressExample.style.backgroundColor = mainColor;
 tapExample.style.backgroundColor = mainColor;
@@ -160,7 +160,6 @@ const gesture = document.getElementById('gesture-container');
 function measureAccelAndRemoveGestures(event) {
   if (accelTimes > 0) return;
   if (event.x > 25 || event.y > 25) {
-    const offPage = 2000;
     const timing = '3';
     swipeExample.style.transition = `transform ${timing}s`;
     panExample.style.transition = `transform ${timing}s`;
