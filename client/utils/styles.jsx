@@ -45,7 +45,7 @@ for (let i = 0; i < gestureArray.length; i++) {
     width: '150px',
     height: '150px',
     lineHeight: '200px',
-    border: '3px solid red',
+    border: '4px solid rgb(255, 206, 0)',
     transform: `rotateY(${i * 60}deg) translateZ(450px)`,
   };
   styles.gyroOff[gestureArray[i]] = {

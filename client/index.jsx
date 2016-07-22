@@ -39,7 +39,6 @@ const App = React.createClass({
   },
 
   componentDidMount() {
-    console.log(gyroStyles);
     imperio.listenerRoomSetup();
     imperio.swipeListener(this.handleSwipe);
     imperio.pinchListener(this.handlePinch);
@@ -74,6 +73,7 @@ const App = React.createClass({
           pressCSS: gyroStyles.gyroOn.press,
           tapCSS: gyroStyles.gyroOn.tap,
         });
+        imperio.emitData(null, 'gyro on');
         setTimeout(this.startRotation, 3000);
       }
     } else if (this.state.gyroscopeOn && !this.state.gestureMode) {
@@ -89,6 +89,7 @@ const App = React.createClass({
           pressCSS: gyroStyles.gyroOff.press,
           tapCSS: gyroStyles.gyroOff.tap,
         });
+        imperio.emitData(null, 'gyro off');
         setTimeout(this.turnGesturesOn, 3000);
       }
     }
@@ -99,7 +100,6 @@ const App = React.createClass({
   },
 
   startRotation() {
-    console.log('in start rotation');
     this.setState({ gyroscopeOn: true, currentGesture: 'GYROSCOPE' });
     setInterval(this.rotate, 50);
   },
@@ -141,10 +141,10 @@ const App = React.createClass({
   handleSwipe(event) {
     if (this.state.gestureMode) {
       const multiplier = event.deltaX > 0 ? 1 : -1;
-      const magnitude = multiplier * (5 * (Math.abs(event.velocityX) / 10) + 5 * (event.distance / 1000)) / 10;
-      const timing = 150 + 400 * Math.abs(magnitude);
-      const skewString = `skewX(${-1 * magnitude * 80}deg)`;
-      const xPosString = `translate(${magnitude * 750}px, 0px)`;
+      const magnitude = (5 * (Math.abs(event.velocityX) / 10) + 5 * (event.distance / 1000)) / 10;
+      const timing = 150 + 400 * magnitude;
+      const skewString = `skewX(${-1 * multiplier * magnitude * 80}deg)`;
+      const xPosString = `translate(${multiplier * magnitude * 800}px, 0px)`;
       const swipeStyle = {
         transition: `transform ${timing / 1000}s`,
         transform: `${skewString} ${xPosString}`,

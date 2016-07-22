@@ -1,10 +1,7 @@
 const React = require('react');
 
 const Iacto = React.createClass({
-  propTypes: {
-    // textShadows: React.PropTypes.string.isRequired,
-  },
-
+  
   /* ------------------------------------ */
   /* ----           Render           ---- */
   /* ------------------------------------ */
