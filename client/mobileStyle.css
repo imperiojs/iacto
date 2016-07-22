@@ -63,7 +63,6 @@ h1 {
 }
 
 /*styling for gyroscopedata*/
-
 #angles {
   transition:borderColor 2s, color 2s, height 2s, width 2s, fontSize 2s;
   display:flex;
