@@ -16,31 +16,30 @@ const Example3 = React.createClass({
 
 
   componentDidMount() {
-    // imperio.pinchListener(handlePinch);
-    // imperio.swipeListener(handleSwipe);
-    // imperio.rotateListener(handleRotate);
-    // imperio.pressListener(handlePress);
-    // imperio.pressUpListener(handlePressUp);
   },
-
-  /* Method provided by react-component-visibility mixin
-   * Invokes prop function visibilityUpdate
-   */
-  // componentVisibilityChanged() {
-  //   const update = { umbra: this.state.visible };
-  //   this.props.visibilityUpdate(update);
-  // },
 
   /* ------------------------------------ */
   /* ----           Render           ---- */
   /* ------------------------------------ */
 
-// ReactDOM.render(<div style={divStyle}>Hello World!</div>, mountNode);
-
   render() {
+    let instructions = '';
+    let emitter = false;
+    for (let key in this.props.connections) {
+      if (this.props.connections[key] === 'emitter') emitter = true;
+    }
+    if (!emitter) {
+      instructions += 'Connect your mobile device to interact through imperio';
+    } else {
+      if (this.props.gyroscopeOn) {
+        instructions += 'Flick device to go back to enable gestures';
+      } else {
+        instructions += 'Flick device to go to enable sensors';
+      }
+    }
     return (
-      <div style={{ height: '700px', border: '1px solid black' }}>
-        <div>Hello, I am Example3</div>
+      <div id="iacto-container">
+        <p id="gesture-id">{this.props.currentGesture ? this.props.currentGesture : 'imperio'}</p>
         <Iacto
               currentPanLocation={this.props.currentPanLocation}
               currentRotateAngle={this.props.currentRotateAngle}
@@ -53,8 +52,12 @@ const Example3 = React.createClass({
               tapCSS={this.props.tapCSS} 
               carouselContCSS={this.props.carouselContCSS} 
               carouselCSS={this.props.carouselCSS}
+              gyroscopeOn={this.props.gyroscopeOn}
+              connections={this.props.connections}
               />
+        <p id="instructions">{instructions}</p>
       </div>
+
     );
   },
 });

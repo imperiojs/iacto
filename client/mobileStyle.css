@@ -1,10 +1,14 @@
 
 /*mobile div for gestures*/
+#movile-div {
+  width:100%;
+}
+
 #swipe-box {
   color:yellow;
   background-color: blue;
   width:100%;
-  height:3em;
+  height:2em;
   font-size:5em;
 }
 
@@ -12,7 +16,7 @@
   color:black;
   background-color: red;
   width:100%;
-  height:5em;
+  height:3em;
   font-size:5em;  
 }
 

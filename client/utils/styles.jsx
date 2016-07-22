@@ -1,6 +1,9 @@
 const styles = {};
 
-styles.carouselContainer = {
+styles.gyroOn = {};
+styles.gyroOff = {};
+
+styles.gyroOn.carouselContainer = {
   display: 'block',
   margin: '0 auto',
   width: '150px',
@@ -8,24 +11,45 @@ styles.carouselContainer = {
   position: 'relative',
   perspective: '1000px',
 };
+styles.gyroOff.carouselContainer = {
+  display: '',
+  margin: '',
+  width: '100%',
+  height: '',
+  position: '',
+  perspective: '',
+};
 
-styles.carousel = {
+styles.gyroOn.carousel = {
   width: '100%',
   height: '100%',
   transformStyle: 'preserve-3d',
-}
+};
+styles.gyroOff.carousel = {
+  display: 'flex',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  margin: '',
+  width: '100%',
+  height: '200px',
+  transformStyle: '',
+};
 
 const gestureArray = ['swipe', 'pan', 'pinch', 'rotate', 'press', 'tap'];
 
 for (let i = 0; i < gestureArray.length; i++) {
-  styles[gestureArray[i]] = {
+  styles.gyroOn[gestureArray[i]] = {
     transition: 'transform 3s',
     display: 'block',
     position: 'absolute',
     width: '150px',
     height: '150px',
     lineHeight: '200px',
-    transform: `rotateY(${i * 60}) translateZ(450px)`,
+    border: '3px solid red',
+    transform: `rotateY(${i * 60}deg) translateZ(450px)`,
+  };
+  styles.gyroOff[gestureArray[i]] = {
+    transition: 'transform 3s',
   };
 }
 

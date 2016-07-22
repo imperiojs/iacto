@@ -28,7 +28,7 @@ const Iacto = React.createClass({
       }
     });
     return (
-      <div id="fake" style={this.props.carouselContCSS}>
+      <div id="carousel-container" style={this.props.carouselContCSS}>
         <div id="gesture-container" style={this.props.carouselCSS}>
           {ExampleArray}
         </div>
